@@ -1,0 +1,90 @@
+# -------------------------
+# Node.js / Backend ignores
+# -------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build / dist outputs
+dist/
+build/
+.tmp/
+.cache/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs
+*.log
+*.log.*
+log/
+debug.log
+error.log
+
+# Coverage / testing
+coverage/
+.nyc_output/
+jest-cache/
+jest-results.json
+
+# Database / ORM artifacts
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+migrations/*.js.map
+
+# -------------------------
+# Frontend ignores
+# -------------------------
+# Dependencies
+frontend/node_modules/
+
+# Build outputs
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/.cache/
+
+# Testing / coverage
+frontend/coverage/
+
+# Misc
+frontend/.DS_Store
+frontend/.env.local
+
+# -------------------------
+# OS / Editor files
+# -------------------------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# IDE / editor configs
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# -------------------------
+# Miscellaneous
+# -------------------------
+# Ignore lock files if you prefer single source of truth
+*.lock
+
+# Ignore generated files
+*.map
