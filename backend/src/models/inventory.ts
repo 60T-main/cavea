@@ -1,7 +1,7 @@
 import { DataTypes, Model, type ForeignKey } from "sequelize";
-import {sequelize} from '../db.js';
+import {sequelize} from '../db';
 
-import { Location } from "./location.js";
+import { Location } from "./location";
 
 export class Inventory extends Model {
     public id!: number;

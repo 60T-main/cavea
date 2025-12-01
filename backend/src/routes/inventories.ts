@@ -8,12 +8,12 @@ const router = Router();
 router.get("/", async (req,res)=>{
     const { locationId } = req.query;
 
-    const sort = String(req.query.sort) 
-    const direction = String(req.query.direction) 
+    const sort = req.query.sort ? String(req.query.sort) : "name" 
+    const direction: "ASC" | "DESC" = String(req.query.direction).toLowerCase() === 'desc' ? "DESC" : "ASC"
 
     const where : {[key: string] : number | string} = {};
     
-    const order : [string, "ASC" | "DESC"][] = [[sort || "name", direction === "desc" ? "DESC" : "ASC"]];
+    const order : [string, "ASC" | "DESC"][] = [[sort , direction]];
     
     if (locationId) {
         where.locationId = Number(locationId);

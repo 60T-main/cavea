@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import {sequelize} from '../db.js';
+import {sequelize} from '../db';
 
 export class Location extends Model {
   public id!: number;
