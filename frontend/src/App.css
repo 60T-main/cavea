@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@layer utilities {
+
+  .pages{
+    @apply flex justify-center items-center gap-2;
+  }
+  .pages-prev, .pages-next {
+    @apply cursor-pointer select-none;
+  }
+
+}

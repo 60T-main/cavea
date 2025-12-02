@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { Inventory } from "../models/inventory";
-import { INTEGER } from "sequelize";
 
 const router = Router();
 
@@ -8,19 +7,23 @@ const router = Router();
 router.get("/", async (req,res)=>{
     const { locationId } = req.query;
 
-    const sort = req.query.sort ? String(req.query.sort) : "name" 
+    const page = Number.isInteger(Number(req.query.page)) && parseInt(String(req.query.page)) > 0 ? parseInt(String(req.query.page)) : 0;
+
+    const sort = req.query.sort ? String(req.query.sort) : "id";
+
     const direction: "ASC" | "DESC" = String(req.query.direction).toLowerCase() === 'desc' ? "DESC" : "ASC"
 
     const where : {[key: string] : number | string} = {};
-    
-    const order : [string, "ASC" | "DESC"][] = [[sort , direction]];
+    const order: [string, "ASC" | "DESC"][] = [[sort, direction]];
+    const limit: number = 20;
+    const offset: number = page * limit;
     
     if (locationId) {
         where.locationId = Number(locationId);
     }
     
     try {
-        const items = await Inventory.findAll({ where, order });
+        const items = await Inventory.findAndCountAll({ where, order, limit, offset });
         res.status(200).json(items);
     } catch (error) {
         res.status(500).json({ message: "Error fetching inventories", error });
