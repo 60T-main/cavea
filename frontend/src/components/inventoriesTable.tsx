@@ -2,18 +2,31 @@ import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import { getInventories, deleteInventory } from "../services/inventories";
-import { getLocations } from "../services/locations";
+import { getLocations, getStatistics } from "../services/locations";
 import type { Inventory } from "../types/inventory";
-import type { Location } from "../types/location";
+import type { Location, Statistics } from "../types/location";
 import { Link } from "react-router-dom";
+import StatisticsModal from "./overlays/StatisticsModal";
 
 const InventoriesTable: React.FC = () => {
+  const [statistics, setStatistics] = useState<Statistics[]>([]);
   const [inventory, setInventory] = useState<Inventory[]>([]);
   const [locations, setLocations] = useState<Location[]>([]);
 
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [totalCount, setTotalCount] = useState<number>(0);
+
+  const [showStatistics, setShowStatistics] = useState(false);
+
+  const fetchStatistics = async () => {
+    try {
+      const response = await getStatistics();
+      setStatistics(response.data);
+    } catch (error) {
+      console.log("error fetching statistics:", error);
+    }
+  };
 
   const fetchInventory = async () => {
     try {
@@ -22,6 +35,7 @@ const InventoriesTable: React.FC = () => {
         locationId: undefined,
         sort: undefined,
         direction: undefined,
+        limit: 25,
       });
       setTotalCount(response.data.count);
       setTotalPages(response.data.count / 20);
@@ -52,6 +66,7 @@ const InventoriesTable: React.FC = () => {
   useEffect(() => {
     fetchInventory();
     fetchLocations();
+    fetchStatistics();
 
     window.scrollTo(0, 0);
   }, [currentPage]);
@@ -62,12 +77,26 @@ const InventoriesTable: React.FC = () => {
 
   return (
     <>
-      <Link
-        className="!no-underline flex justify-center items-center w-1/2 mx-auto my-2"
-        to={"/inventories/add"}
-      >
-        <Button className="w-full">ინვენტარის დამატება</Button>
-      </Link>
+      <StatisticsModal
+        overlayState={showStatistics}
+        closeOverlay={() => setShowStatistics(false)}
+        statistics={statistics}
+      />
+      <div className="flex justify-between items-center w-full mx-auto my-2">
+        <Link
+          className="!no-underline flex items-center w-1/2"
+          to={"/inventories/add"}
+        >
+          <Button className="w-full">ინვენტარის დამატება</Button>
+        </Link>
+        <Button
+          variant="info"
+          className="ml-2"
+          onClick={() => setShowStatistics(true)}
+        >
+          სტატისტიკა
+        </Button>
+      </div>
       {inventory ? (
         <>
           <Table striped bordered hover>

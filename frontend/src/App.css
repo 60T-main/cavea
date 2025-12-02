@@ -20,4 +20,12 @@
   .pages-prev, .pages-next {
     @apply cursor-pointer select-none;
   }
+
+  .background-overlay {
+    @apply fixed inset-0 bg-black/94 z-1000 !overflow-y-hidden;
+  }
+
+  .menu-overlay{
+    @apply absolute top-0 bg-gray-400 z-1001;
+  }
 }

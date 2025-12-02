@@ -4,18 +4,20 @@ const API_BASE = import.meta.env.VITE_SCOPE + "/inventories";
 
 export const getInventories = (body: {
     page: number | 0;
+    limit: number | 20;
     locationId: number | undefined;
     sort: string | undefined,
     direction: string | undefined,
 }) => { 
-    const params = new URLSearchParams({
-        page: String(body.page ?? ""),
-        locationId: String(body.locationId ?? ""),
-        sort: body.sort ?? "",
-        direction: body.direction ?? "",
-    }).toString();
+const params = new URLSearchParams({
+    page: String(body.page ?? ""),
+    limit: String(body.limit ?? ""), 
+    locationId: String(body.locationId ?? ""),
+    sort: body.sort ?? "",
+    direction: body.direction ?? "",
+}).toString();
 
-    return axios.get(`${API_BASE}?${params}`);
+return axios.get(`${API_BASE}?${params}`);
 }
 
 export const createInventories = (body: {

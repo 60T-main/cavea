@@ -9,13 +9,17 @@ router.get("/", async (req,res)=>{
 
     const page = Number.isInteger(Number(req.query.page)) && parseInt(String(req.query.page)) > 0 ? parseInt(String(req.query.page)) : 0;
 
+    const limitparam = Number.isInteger(Number(req.query.limit)) && parseInt(String(req.query.limit)) > 0
+  ? parseInt(String(req.query.limit))
+  : 20;
+
     const sort = req.query.sort ? String(req.query.sort) : "id";
 
     const direction: "ASC" | "DESC" = String(req.query.direction).toLowerCase() === 'desc' ? "DESC" : "ASC"
 
     const where : {[key: string] : number | string} = {};
     const order: [string, "ASC" | "DESC"][] = [[sort, direction]];
-    const limit: number = 20;
+    const limit: number = limitparam;
     const offset: number = page * limit;
     
     if (locationId) {
@@ -61,6 +65,8 @@ router.delete("/:id", async (req,res)=>{
     }
     
 })
+
+
 
 export default router
 
