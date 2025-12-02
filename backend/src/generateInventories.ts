@@ -36,6 +36,6 @@ async function deleteInventory() {
 });
 }
 
+deleteInventory()
 generateInventory()
 
-// deleteInventory()

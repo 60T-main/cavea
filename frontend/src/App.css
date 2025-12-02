@@ -26,6 +26,6 @@
   }
 
   .menu-overlay{
-    @apply absolute top-0 bg-gray-400 z-1001;
+    @apply absolute top-0 left-1/2 -translate-x-1/2 bg-gray-400 z-1001 flex flex-col justify-center items-center;
   }
 }

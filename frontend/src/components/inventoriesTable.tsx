@@ -12,6 +12,12 @@ const InventoriesTable: React.FC = () => {
   const [statistics, setStatistics] = useState<Statistics[]>([]);
   const [inventory, setInventory] = useState<Inventory[]>([]);
   const [locations, setLocations] = useState<Location[]>([]);
+  const [locationFilter, setLocationFilter] = useState<number | undefined>(
+    undefined
+  );
+
+  const [sortField, setSortField] = useState<string>("name");
+  const [sortDirection, setSortDirection] = useState<string>("asc");
 
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -32,9 +38,12 @@ const InventoriesTable: React.FC = () => {
     try {
       const response = await getInventories({
         page: currentPage,
-        locationId: undefined,
-        sort: undefined,
-        direction: undefined,
+        locationId:
+          locationFilter === undefined || locationFilter === 0
+            ? undefined
+            : locationFilter,
+        sort: sortField,
+        direction: sortDirection,
         limit: 25,
       });
       setTotalCount(response.data.count);
@@ -69,7 +78,7 @@ const InventoriesTable: React.FC = () => {
     fetchStatistics();
 
     window.scrollTo(0, 0);
-  }, [currentPage]);
+  }, [currentPage, locationFilter, sortField, sortDirection]);
 
   useEffect(() => {
     console.log(inventory);
@@ -96,6 +105,50 @@ const InventoriesTable: React.FC = () => {
         >
           სტატისტიკა
         </Button>
+
+        <div className="ml-4">
+          <label htmlFor="locationFilter" className="mr-2">
+            ფილტრი:
+          </label>
+          <select
+            id="locationFilter"
+            className="form-select"
+            value={locationFilter === undefined ? 0 : locationFilter}
+            onChange={(e) => setLocationFilter(Number(e.target.value))}
+          >
+            <option value={0}>ყველა</option>
+            {locations.map((loc) => (
+              <option key={loc.id} value={loc.id}>
+                {loc.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div className="ml-4 my-2">
+        <label htmlFor="sortField" className="mr-2">
+          სორტირება:
+        </label>
+        <select
+          id="sortField"
+          className="form-select"
+          value={sortField}
+          onChange={(e) => setSortField(e.target.value)}
+        >
+          <option value="name">სახელი</option>
+          <option value="price">ფასი</option>
+          <option value="locationId">ადგილმდებარეობა</option>
+        </select>
+        <select
+          id="sortDirection"
+          className="form-select ml-2"
+          value={sortDirection}
+          onChange={(e) => setSortDirection(e.target.value)}
+        >
+          <option value="asc">ზრდადობით</option>
+          <option value="desc">კლებადობით</option>
+        </select>
       </div>
       {inventory ? (
         <>
