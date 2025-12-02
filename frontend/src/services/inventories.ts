@@ -24,6 +24,6 @@ export const createInventories = (body: {
   price: number  
 }) => axios.post(`${API_BASE}/add`, body);
 
-export const deleteInventory = (body: {
+export const deleteInventory = (
   id: number
-}) => axios.delete(`${API_BASE}/${body.id}`);
+) => axios.delete(`${API_BASE}/${id}`);
